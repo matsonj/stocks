@@ -1,15 +1,9 @@
-Welcome to your new dbt project!
+## MotherDuck Stocks Data Workshop
 
-### Using the starter project
+This workshop will help you get data from csv into MotherDuck, and lay out basic patterns for using dbt + MotherDuck in a performant way.
 
-Try running the following commands:
-- dbt run
-- dbt test
-
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+### Getting Started
+1. Create a MotherDuck account.
+2. Create a database called "stocks" inside of MotherDuck. This can be done with the command `create database stocks;` from the MotherDuck UI.
+3. Fork the `matsonj/stocks` repo in GitHub.
+4. (optional) Generate an access token inside of MotherDuck and add it to your `.env` file or as a secret inside of GitHub.
