@@ -1,0 +1,18 @@
+jdw:
+  outputs:
+    dev:
+      type: duckdb
+      schema: main
+      path: 'md:stocks_dev'
+      threads: 4
+      extensions:
+        - httpfs
+
+    prod:
+      type: duckdb
+      schema: main
+      path: 'md:stocks'
+      threads: 1
+
+  target: dev
+
