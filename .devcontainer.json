@@ -20,9 +20,6 @@
           "workbench.editor.highlightModifiedTabs": true,
           "workbench.editor.labelFormat": "medium",
           "workbench.editor.revealIfOpen": true,
-          "editor.rulers": [
-            99
-          ],
           "yaml.schemas": {
             "https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/dbt_yml_files.json": [
                 "/*.yml",
@@ -44,7 +41,6 @@
         }
     },
     "extensions": [
-        "bastienboutonnet.vscode-dbt",
         "editorconfig.editorconfig",
         "amodio.find-related",
         "ms-azuretools.vscode-docker",
