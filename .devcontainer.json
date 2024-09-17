@@ -76,7 +76,6 @@
     },
     "extensions": [
         "bastienboutonnet.vscode-dbt",
-        "dorzey.vscode-sqlfluff",
         "editorconfig.editorconfig",
         "amodio.find-related",
         "ms-azuretools.vscode-docker",
