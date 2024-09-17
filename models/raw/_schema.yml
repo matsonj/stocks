@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: company_info
+    columns:
+      - name: symbol
+        data_tests:
+          - unique
+  - name: options
+    columns:
+      - name: contractSymbol
+        data_tests:
+          - unique
+  - name: stock_history
+    columns:
+      - name: id
+        data_tests:
+          - unique

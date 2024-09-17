@@ -7,14 +7,18 @@
         """,
         materialized="incremental",
         unique_key="symbol",
-        post_hook="""
-            delete from {{this}} where filename not in (select file from {{ ref('files') }} where entity = 'ticker_info')   
-            """
     )
 }}
 
-select *
-from read_csv(getvariable(my_list), filename = true)
+select info.*, now() at time zone 'UTC' as updated_at
+from read_csv(getvariable(my_list), filename = true) as info
+left join {{ ref("files") }} as files on info.filename = files.file
 {% if is_incremental() %}
-    where filename not in (select filename from {{ this }})
+    where
+        not exists (
+            select 1
+            from {{ this }} existence_ck
+            where existence_ck.filename = info.filename
+        )
 {% endif %}
+qualify row_number() over (partition by info.symbol order by files.timestamp desc) = 1
