@@ -1,3 +1,4 @@
 MSFT
 AAPL
-FNKO
+DIS
+F
