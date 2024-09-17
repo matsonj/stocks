@@ -21,8 +21,4 @@ left join {{ ref("files") }} as files on stocks.filename = files.file
             where existence_ck.filename = stocks.filename
         )
 {% endif %}
-qualify
-    row_number() over (
-        partition by id order by files.timestamp desc
-    )
-    = 1
+qualify row_number() over (partition by id order by files.timestamp desc) = 1

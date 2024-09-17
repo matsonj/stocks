@@ -47,7 +47,8 @@
         "ms-python.python",
         "visualstudioexptteam.vscodeintellicode",
         "samuelcolvin.jinjahtml",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "innoverio.vscode-dbt-power-user"
     ],
     
     "remoteUser": "vscode"
