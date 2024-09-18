@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 from datetime import datetime, timedelta
+import os
 
 def read_symbols_from_file(file_path):
     """Reads stock symbols from a file."""
@@ -37,7 +38,9 @@ def main():
     start_date = (datetime.now() - timedelta(days=360)).strftime('%Y-%m-%d')
 
     # Read the stock symbols from the file
-    symbols = read_symbols_from_file('symbols.txt')
+    script_dir = os.path.dirname(__file__)
+    file_path = os.path.join(script_dir, 'symbols.txt')
+    symbols = read_symbols_from_file(file_path)
 
     if not symbols:
         print("No symbols found in file.")
@@ -63,7 +66,7 @@ def main():
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
 
         # Export to CSV with timestamp in the file name
-        file_name = f"data/ticker_history_{timestamp}.csv"
+        file_name = os.path.join(script_dir, '..', 'data', f"ticker_history_{timestamp}.csv")
         result_df.to_csv(file_name, index=True)
         print(f"Data saved to {file_name}")
     else:

@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
+import os
 
 def read_symbols_from_file(file_path):
     """Reads stock symbols from a file."""
@@ -49,7 +50,9 @@ def fetch_option_data(symbol):
 
 def main():
     # Read the stock symbols from the file
-    symbols = read_symbols_from_file('symbols.txt')
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    symbols_file_path = os.path.join(script_dir, 'symbols.txt')
+    symbols = read_symbols_from_file(symbols_file_path)
 
     if not symbols:
         print("No symbols found in file.")
@@ -75,7 +78,7 @@ def main():
 
 
         # Export to CSV with timestamp in the file name
-        file_name = f"data/option_history_{timestamp}.csv"
+        file_name = os.path.join(script_dir, '..', 'data', f"option_history_{timestamp}.csv")
         result_df.to_csv(file_name, index=True)
         print(f"Data saved to {file_name}")
     else:
