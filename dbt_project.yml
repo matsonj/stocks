@@ -34,3 +34,9 @@ models:
     # Config indicated by + and applies to all files under models/example/
     raw:
       materialized: table
+
+# on-run-start:
+#   - 'CREATE OR REPLACE activity_log AS SELECT * FROM md:stocks_dev.activity_log WITH SAMPLE 1%'
+
+# on-run-end: 
+#   - 'COPY DATABASE stocks_dev TO md:stocks_dev'

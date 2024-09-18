@@ -8,6 +8,8 @@ This workshop will help you get data from csv into MotherDuck, and lay out basic
 3. Fork the `matsonj/stocks` repo in GitHub.
 4. Generate an access token inside of MotherDuck and add it to your `.env` file or as a secret inside of GitHub.
     - it should be noted that using it as a codespace-scoped secret allows all github extensions to use it, as we can put it in the dbt path easily.
+5. Open a codespace on the repo.
+6. After it loads completely, _reload the window_ in order to make sure the dbt power user extension has access to your md environment.
 
 ### Data Flow Overview
 1. Data is extracted from yahoo finance API using python. The scripts run and write out a file to `data` folder with the timestamp in the name for each file.

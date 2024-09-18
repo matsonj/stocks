@@ -22,3 +22,5 @@ left join {{ ref("files") }} as files on info.filename = files.file
         )
 {% endif %}
 qualify row_number() over (partition by info.symbol order by files.timestamp desc) = 1
+
+-- replace with arg_max
