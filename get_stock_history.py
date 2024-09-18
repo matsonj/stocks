@@ -34,7 +34,7 @@ def fetch_stock_data(symbol, start_date, end_date):
 def main():
     # Define the date range (last 30 days)
     end_date = datetime.now().strftime('%Y-%m-%d')
-    start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+    start_date = (datetime.now() - timedelta(days=360)).strftime('%Y-%m-%d')
 
     # Read the stock symbols from the file
     symbols = read_symbols_from_file('symbols.txt')
