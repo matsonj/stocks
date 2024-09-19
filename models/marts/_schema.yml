@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: company_info
+  - name: dim_companies
     columns:
       - name: symbol
         data_tests:
           - unique
-  - name: options
+  - name: fact_options
     columns:
       - name: contractSymbol
         data_tests:
           - unique
-  - name: stock_history
+  - name: fact_stock_prices
     columns:
       - name: id
         data_tests:
