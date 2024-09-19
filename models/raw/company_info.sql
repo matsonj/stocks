@@ -6,21 +6,15 @@
             )
         """,
         materialized="incremental",
-        unique_key="symbol",
+        unique_key="id",
     )
 }}
 
-select info.*, now() at time zone 'UTC' as updated_at
+select
+    info.symbol || '-' || info.filename as id,
+    info.*,
+    now() at time zone 'UTC' as updated_at
 from read_csv(getvariable(my_list), filename = true) as info
-left join {{ ref("files") }} as files on info.filename = files.file
 {% if is_incremental() %}
-    where
-        not exists (
-            select 1
-            from {{ this }} existence_ck
-            where existence_ck.filename = info.filename
-        )
+    where not exists (select 1 from {{ this }} ck where ck.filename = info.filename)
 {% endif %}
-qualify row_number() over (partition by info.symbol order by files.timestamp desc) = 1
-
--- replace with arg_max

@@ -7,4 +7,4 @@ select
     sp.date,
     round(c.sharesoutstanding::real * sp.close::real, 0) as market_cap
 from {{ ref("dim_companies") }} c
-left join {{ ref("fact_stock_price") }} sp on c.symbol = sp.symbol
+left join {{ ref("fact_stock_prices") }} sp on c.symbol = sp.symbol
