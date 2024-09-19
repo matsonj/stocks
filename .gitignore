@@ -6,3 +6,4 @@ myenv/
 data/*.csv
 .env
 .user.yml
+*.duckdb

@@ -14,5 +14,11 @@ stocks:
       path: 'md:stocks'
       threads: 1
 
+    local:
+      type: duckdb
+      schema: main
+      path: 'stocks_local.duckdb'
+      threads: 4
+
   target: dev
 
