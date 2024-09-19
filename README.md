@@ -4,10 +4,9 @@ This workshop will help you get data from csv into MotherDuck, and lay out basic
 
 ### Getting Started
 1. Create a MotherDuck account.
-2. Create a database called "stocks" inside of MotherDuck. This can be done with the command `create database stocks;` from the MotherDuck UI.
+2. Create a database called "stocks_dev" inside of MotherDuck. This can be done with the command `create database stocks_dev;` from the MotherDuck UI.
 3. Fork the `matsonj/stocks` repo in GitHub.
-4. Generate an access token inside of MotherDuck and add it to your `.env` file or as a secret inside of GitHub.
-    - it should be noted that using it as a codespace-scoped secret allows all github extensions to use it, as we can put it in the dbt path easily.
+4. Generate an access token inside of MotherDuck and add it as a codespace secret inside of GitHub.
 5. Open a codespace on the repo.
 6. After it loads completely, _reload the window_ in order to make sure the dbt power user extension has access to your md environment.
 
