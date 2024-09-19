@@ -6,3 +6,5 @@ pyarrow
 duckdb~=1.1.0
 shandy-sqlfmt[jinjafmt]
 yfinance
+plotly
+dash
