@@ -18,6 +18,7 @@ This workshop will help you get data from csv into MotherDuck, and lay out basic
     - `python3 get_stock_history.py`
 2. Build the data warehouse with `dbt build` in the CLI.
 3. Lastly, plot the results using `python3 viz/line_chart.py`. The webpage will be available at `127.0.0.1:8050`.
+4. Alternatively, you can invoke these 3 steps with `make run`.
 
 ### Data Flow Overview
 1. Data is extracted from yahoo finance API using python. The scripts run and write out a file to `data` folder with the timestamp in the name for each file.
