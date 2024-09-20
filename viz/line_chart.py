@@ -1,9 +1,17 @@
 import duckdb
 import pandas as pd
 import plotly.graph_objects as go
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file
+load_dotenv()
+
+# Retrieve the MOTHERDUCK_TOKEN from environment variables
+MOTHERDUCK_TOKEN = os.getenv('MOTHERDUCK_TOKEN')
 
 # Sample data from DuckDB
-conn = duckdb.connect('md:?$MOTHERDUCK_TOKEN')
+conn = duckdb.connect(f'md:?MOTHERDUCK_TOKEN={MOTHERDUCK_TOKEN}')
 df = conn.execute('''
 select date as date, market_cap as value, symbol
 from stocks_dev.main.market_cap_by_day
@@ -19,6 +27,7 @@ where symbol = 'AAPL'
 
 import dash
 from dash import dcc, html
+
 import plotly.express as px
 
 # Initialize Dash app

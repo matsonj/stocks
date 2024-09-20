@@ -3,8 +3,9 @@ dbt-duckdb~=1.8.0
 pandas==2.0
 numpy~=1.24
 pyarrow
-duckdb~=1.1.0
+duckdb==1.1.0
 shandy-sqlfmt[jinjafmt]
 yfinance
 plotly
 dash
+python-dotenv

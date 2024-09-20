@@ -4,7 +4,7 @@ stocks:
       type: duckdb
       schema: main
       path: 'md:stocks_dev?$MOTHERDUCK_TOKEN'
-      threads: 4
+      threads: 1
       extensions:
         - httpfs
 
@@ -18,7 +18,7 @@ stocks:
       type: duckdb
       schema: main
       path: 'stocks_local.duckdb'
-      threads: 4
+      threads: 1
 
   target: dev
 
