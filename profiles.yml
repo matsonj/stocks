@@ -3,7 +3,7 @@ stocks:
     dev:
       type: duckdb
       schema: main
-      path: 'md:stocks_dev?$MOTHERDUCK_TOKEN'
+      path: md:stocks_dev
       threads: 1
       extensions:
         - httpfs

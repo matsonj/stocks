@@ -34,3 +34,6 @@ This workshop will help you get data from csv into MotherDuck, and lay out basic
 
 1. Plotting is defined in the `viz/line_chart.py` file. It is a set of simple charts using `plotly` and `dash`. 
 2. You can serve the plots with `python3 viz/line_chart.py`.
+
+### Other Notes
+1. In order to take advantage of the `dbt power user` plugin, you will need to put your `MOTHERDUCK_TOKEN` in your bash profile. Otherwise, all interactions with `dbt power user` will hit the login page for MotherDuck.
