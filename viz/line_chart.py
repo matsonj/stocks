@@ -28,6 +28,7 @@ df3 = conn.execute('''
                    select distinct symbol
                    from stocks_dev.main.market_cap_by_day
                    where market_cap is not null
+                   order by symbol
                    ''').df()
 
 
