@@ -20,7 +20,7 @@ where symbol = 'AAPL'
 
 df2 = conn.execute('''
 select * exclude(id, date), date as date
-from stocks_dev.main.fact_stock_price
+from stocks_dev.main.fact_stock_prices
 where symbol = 'AAPL'
 ''').df()
 
