@@ -12,9 +12,9 @@ This workshop will help you get data from csv into MotherDuck, and lay out basic
 
 ### Running the project
 1. Get data from the yahoo finance api by running the following 3 commands:
-    - `python3 get_info.py`
-    - `python3 get_options.py`
-    - `python3 get_stock_history.py`
+    - `python3 scripts/get_info.py`
+    - `python3 scripts/get_options.py`
+    - `python3 scripts/get_stock_history.py`
 2. Build the data warehouse with `dbt build` in the CLI.
 3. Lastly, plot the results using `python3 viz/line_chart.py`. The webpage will be available at `127.0.0.1:8050`.
 4. Alternatively, you can invoke these 3 steps with `make run`.
