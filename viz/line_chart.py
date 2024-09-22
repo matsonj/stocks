@@ -1,151 +1,98 @@
+import os
 import duckdb
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
-import os
 from dotenv import load_dotenv
-
-# Load environment variables from a .env file
-load_dotenv()
-
-# Retrieve the MOTHERDUCK_TOKEN from environment variables
-MOTHERDUCK_TOKEN = os.getenv('MOTHERDUCK_TOKEN')
-
-# Sample data from DuckDB
-conn = duckdb.connect(f'md:?MOTHERDUCK_TOKEN={MOTHERDUCK_TOKEN}')
-df = conn.execute('''
-select date as date, market_cap as value, symbol
-from stocks_dev.main.market_cap_by_day
-where symbol = 'AAPL'
-''').df()
-
-df2 = conn.execute('''
-select * exclude(id, date), date as date
-from stocks_dev.main.fact_stock_prices
-where symbol = 'AAPL'
-''').df()
-
-df3 = conn.execute('''
-                   select distinct symbol
-                   from stocks_dev.main.market_cap_by_day
-                   where market_cap is not null
-                   order by symbol
-                   ''').df()
-
-
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
-import plotly.express as px
+# Load environment variables from a .env file
+load_dotenv()
+MOTHERDUCK_TOKEN = os.getenv('MOTHERDUCK_TOKEN')
+
+# Connect to DuckDB using the MotherDuck token
+conn = duckdb.connect(f'md:?MOTHERDUCK_TOKEN={MOTHERDUCK_TOKEN}')
+
+# Retrieve available stock symbols for the dropdown menu
+symbols_df = conn.execute('''
+    SELECT DISTINCT symbol
+    FROM stocks_dev.main.market_cap_by_day
+    WHERE market_cap IS NOT NULL
+    ORDER BY symbol
+''').df()
+symbols = symbols_df['symbol'].tolist()
 
 # Initialize Dash app
 app = dash.Dash(__name__)
-# Create a dropdown list using df3
-dropdown_options = [{'label': symbol, 'value': symbol} for symbol in df3['symbol']]
 
-app.layout = html.Div(children=[
-    html.H1(children='Stock Performance'),
-    html.H2(children='Select a Symbol'),
-    
+# Define the layout of the app
+app.layout = html.Div([
+    html.H1('Stock Performance'),
+    html.H2('Select a Symbol'),
     dcc.Dropdown(
         id='symbol-dropdown',
-        options=dropdown_options,
-        value='AAPL'  # Default value
+        options=[{'label': sym, 'value': sym} for sym in symbols],
+        value='AAPL'  # Default selected symbol
     ),
-    
-    html.H2(children='Market Cap Line Chart'),
-    dcc.Graph(
-        id='line-chart'
-    ),
-    
-    html.H2(children='Candlestick Chart'),
-    dcc.Graph(
-        id='candlestick-chart'
-    )
+    html.H2('Market Cap Line Chart'),
+    dcc.Graph(id='line-chart'),
+    html.H2('Candlestick Chart'),
+    dcc.Graph(id='candlestick-chart')
 ])
 
+# Callback to update charts based on selected symbol
 @app.callback(
     [Output('line-chart', 'figure'), Output('candlestick-chart', 'figure')],
     [Input('symbol-dropdown', 'value')]
 )
 def update_charts(selected_symbol):
-    # Query data based on selected symbol
-    df = conn.execute(f'''
-    select date as date, market_cap as value, symbol
-    from stocks_dev.main.market_cap_by_day
-    where symbol = '{selected_symbol}'
+    # Query market cap data for the selected symbol
+    market_cap_df = conn.execute(f'''
+        SELECT Date, market_cap
+        FROM stocks_dev.main.market_cap_by_day
+        WHERE symbol = '{selected_symbol}'
     ''').df()
+    
+    # Ensure consistent column naming
+    market_cap_df.rename(columns={'Date': 'date'}, inplace=True)
 
-    df2 = conn.execute(f'''
-    select * exclude(id, date), date as date
-    from stocks_dev.main.fact_stock_prices
-    where symbol = '{selected_symbol}'
+    # Create a line chart for market cap
+    line_fig = px.line(
+        market_cap_df, x='date', y='market_cap',
+        title=f'{selected_symbol} Market Cap: Last 360 days'
+    )
+
+    # Query stock price data for the selected symbol
+    stock_prices_df = conn.execute(f'''
+        SELECT Date, Open, High, Low, Close
+        FROM stocks_dev.main.fact_stock_prices
+        WHERE symbol = '{selected_symbol}'
     ''').df()
+    
+    # Ensure consistent column naming
+    stock_prices_df.rename(columns={'Date': 'date'}, inplace=True)
 
-    # Create a line chart using Plotly Express
-    fig = px.line(df, x='date', y='value', title=f'{selected_symbol} Market Cap: Last 360 days')
-
-    # Update layout for better aesthetics
-    fig.update_layout(
-        title={
-            'text': f'{selected_symbol} Market Cap: Last 360 days',
-            'y':0.9,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        },
-        xaxis_title='Date',
-        yaxis_title='Market Cap (USD)',
-        yaxis_tickprefix="$",
-        template='plotly_white',
-        font=dict(
-            family="Arial, sans-serif",
-            size=12,
-            color="RebeccaPurple"
+    # Create a candlestick chart for stock prices
+    candlestick_fig = go.Figure(data=[
+        go.Candlestick(
+            x=stock_prices_df['date'],
+            open=stock_prices_df['Open'],
+            high=stock_prices_df['High'],
+            low=stock_prices_df['Low'],
+            close=stock_prices_df['Close']
         )
-    )
-
-    # Update traces for better visibility
-    fig.update_traces(
-        line=dict(color='royalblue', width=2),
-        marker=dict(size=4)
-    )
-
-    # Create a candlestick chart using Plotly
-    fig2 = go.Figure(data=[go.Candlestick(x=df2['date'], 
-                                          open=df2['Open'], 
-                                          high=df2['High'], 
-                                          low=df2['Low'], 
-                                          close=df2['Close'])])
-
-    # Update layout for better aesthetics
-    fig2.update_layout(
-        title={
-            'text': f'{selected_symbol} Candlestick Chart: Last 360 days',
-            'y':0.9,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        },
+    ])
+    candlestick_fig.update_layout(
+        title=f'{selected_symbol} Candlestick Chart: Last 360 days',
         xaxis_title='Date',
         yaxis_title='Stock Price (USD)',
-        yaxis_tickprefix="$",
-        template='plotly_white',
-        font=dict(
-            family="Arial, sans-serif",
-            size=12,
-            color="RebeccaPurple"
-        )
+        yaxis_tickprefix='$',
+        template='plotly_white'
     )
 
-    # Update traces for better visibility
-    fig2.update_traces(
-        increasing_line_color='royalblue', 
-        decreasing_line_color='firebrick',
-        line_width=1
-    )
-
-    return fig, fig2
+    return line_fig, candlestick_fig
 
 # Run the Dash app
 if __name__ == '__main__':
