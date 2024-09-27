@@ -14,7 +14,7 @@ select
     info.symbol || '-' || info.filename as id,
     info.*,
     now() at time zone 'UTC' as updated_at
-from read_csv(getvariable(my_list), filename = true) as info
+from read_csv(getvariable(my_list), filename = true, union_by_name = true) as info
 {% if is_incremental() %}
     where not exists (select 1 from {{ this }} ck where ck.filename = info.filename)
 {% endif %}

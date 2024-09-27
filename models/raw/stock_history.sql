@@ -14,7 +14,7 @@ select
     symbol || '-' || date || '-' || filename as id,
     stocks.*,
     now() at time zone 'UTC' as updated_at
-from read_csv(getvariable(my_list), filename = true) as stocks
+from read_csv(getvariable(my_list), filename = true, union_by_name = true) as stocks
 left join {{ ref("files") }} as files on stocks.filename = files.file
 {% if is_incremental() %}
     where not exists (select 1 from {{ this }} ck where ck.filename = stocks.filename)
