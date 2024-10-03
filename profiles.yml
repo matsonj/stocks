@@ -20,5 +20,5 @@ stocks:
       path: 'stocks_local.duckdb'
       threads: 1
 
-  target: dev
+  target: local
 
