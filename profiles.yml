@@ -7,5 +7,9 @@ stocks:
       threads: 1
       extensions:
         - httpfs
+    local:
+      type: duckdb
+      schema: main
+      path: stocks_local.db
   target: dev
 
